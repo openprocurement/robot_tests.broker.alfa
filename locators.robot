@@ -13,14 +13,15 @@ ${locator.auctionsList.button.auctionUaid}  //table[@id='searchTable']/tbody/tr/
 ${locator.auctionsList.button.addAuction}  id=createOrderBtn
 
 
+${locator.auction.view.button.auction}  xpath=//div[@id='AuctionInfoList']/a[contains(text(), 'перейти')]@href
 ${locator.auction.view.button.editAuction}  xpath=//a[contains(@class, 'btn')][contains(text(), 'Редагувати')]
+${locator.auction.view.auctionStatus}  id=auctionStatusId
 ${locator.auction.view.AuctionID}  id=AuctionID
 ${locator.auction.view.Title}  id=Title
 ${locator.auction.view.Description}  id=Description
 ${locator.auction.view.Value.Amount}  id=Value.Amount
 ${locator.auction.view.Value.Currency}  id=Value.Currency
 ${locator.auction.view.MinimalStep.Amount}  id=MinimalStep.Amount
-# TODO remove ${locator.auction.view.MinimalStep.Currency}  id=MinimalStep.Currency
 ${locator.auction.view.enquiryPeriod.startDate}  id=EnquiryPeriod_StartDate
 ${locator.auction.view.enquiryPeriod.endDate}  id=EnquiryPeriod_EndDate
 ${locator.auction.view.tenderPeriod.startDate}  id=TenderPeriod_StartDate
@@ -56,6 +57,13 @@ ${locator.auction.view.tab.bid}  xpath=//div/ul[@id='AuctionTabs']/li/a[@href='#
 ${locator.auction.view.bid.field.Amount}  xpath=//div[@id='CreateBidForm']//input[@name='Amount']
 ${locator.auction.view.bid.button.send}  xpath=//div[@id='CreateBidForm']//input[@type='submit']
 ${locator.auction.view.bid.button.edit}  xpath=//input[contains(@class, 'bidButon')][@value='Редагувати']
+${locator.auction.view.bid.button.confirm}  xpath=//input[contains(@class, 'bidButon')][@value='Підтвердити участь']
+${locator.auction.view.bid.button.cancel}  xpath=//input[contains(@class, 'bidButon')][@value='Відхилити']
+${locator.auction.view.bid.button.addDocs}  xpath=//input[contains(@class, 'bidButon')][@value='Прикласти документи']
+${locator.auction.view.bid.attachments.field.Title}  xpath=//div[@id='bidDocuments']//input[@id='Title']
+${locator.auction.view.bid.attachments.field.Description}  xpath=//div[@id='bidDocuments']//input[@id='Description']
+${locator.auction.view.bid.attachments.field.Document}  xpath=//div[@id='bidDocuments']//input[@id='Document']
+${locator.auction.view.bid.attachments.button.send}  xpath=//div[@id='bidDocuments']//button[@type='submit']
 
 
 ${locator.auction.view.tab.attachments}  xpath=//div/ul[@id='AuctionTabs']/li/a[@href='#Attachments']
@@ -64,7 +72,6 @@ ${locator.auction.view.attachments.field.Description}  xpath=//div[@id='Attachme
 ${locator.auction.view.attachments.field.Document}  xpath=//div[@id='AttachmentsBody']//input[@id='Document']
 ${locator.auction.view.attachments.button.send}  xpath=//div[@id='AttachmentsBody']//button[@type='submit']
 
-${locator.auction.view.button.auction}  xpath=//a[contains(@class, 'btn')][contains(text(), 'перейти на аукціон')]@href
 
 ${locator.auction.edit.button.create}  id=createOrder
 ${locator.auction.edit.button.edit}  id=editOrder

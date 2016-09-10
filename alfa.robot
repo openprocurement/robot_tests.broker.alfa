@@ -1,9 +1,7 @@
 *** Settings ***
-Library  Selenium2Screenshots
 Library  Selenium2Library
 Library  String
 Library  Collections
-Library  DateTime
 Library  alfa_service.py
 Resource  locators.robot
 Resource  lib.robot
@@ -57,13 +55,11 @@ Login
   Дочекатися елемента  ${locator.auction.view.AuctionID}
   Натиснути кнопку  ${locator.auction.view.button.editAuction}
   Дочекатися елемента  ${locator.auction.edit.title}
-  ${fieldvalue}=   adapt_data_for_document   ${fieldname}   ${fieldvalue}
   Input Text   ${locator.auction.edit.${fieldname}}   ${fieldvalue}
   Натиснути кнопку  ${locator.auction.edit.button.edit}
 
 Отримати інформацію із тендера
   [Arguments]  ${username}  ${field_name}
-# TODO remove  Switch browser   ${username}
   Run Keyword And Return  lib.Отримати інформацію про ${field_name}
 
 Завантажити документ
@@ -86,13 +82,12 @@ Login
   Ввести значення в поле  ${locator.auction.edit.questions.field.Title}  ${question.data.title}
   Ввести значення в поле  ${locator.auction.edit.questions.field.Description}  ${question.data.description}
   Натиснути кнопку  ${locator.auction.edit.questions.button.sendQuestion}
-  Execute Javascript  window.confirm = function(msg) { return true; }
 
 Відповісти на питання
   [Arguments]  ${username}  ${tender_uaid}  ${question_index}  ${answer_data}  ${question_id}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Натиснути кнопку  ${locator.auction.view.tab.questions}
-  Execute Javascript  if ($('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
+  Розгорнути коментарi
   Ввести значення в поле  ${locator.auction.view.questions.question1.field.answer}  ${answer_data.data.answer}
   Натиснути кнопку  ${locator.auction.view.questions.question1.button.sendAnswer}
 
@@ -104,24 +99,12 @@ Login
   [Arguments]   ${username}  ${tender_uaid}  ${bid}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${amount}=   add_second_sign_after_point   ${bid.data.value.amount}
-#  Run keyword if   '${TEST NAME}' != 'Неможливість подати цінову пропозицію до початку періоду подачі пропозицій першим учасником'
-#  ...   Wait Until Keyword Succeeds   10 x   60 s   Дочекатися синхронізації для періоду подачі пропозицій
   Натиснути кнопку  ${locator.auction.view.tab.bid}
   Ввести значення в поле  ${locator.auction.view.bid.field.Amount}  ${amount}
   Натиснути кнопку  ${locator.auction.view.bid.button.send}
+  Натиснути кнопку  ${locator.auction.view.tab.bid}
+  Натиснути кнопку  ${locator.auction.view.bid.button.confirm}
   [Return]  ${bid}
-
-########### Видалити після встановлення коректних часових проміжків для періодів #######################
-#Дочекатися синхронізації для періоду подачі пропозицій
-#  Reload Page
-#  Wait Until Page Contains    Ваша пропозиція
-#  Fail  редактировать
-
-#Дочекатися синхронізації для періоду аукціон
-#  Reload Page
-#  Wait Until Page Contains Element   xpath=//div[@class="statusItem active" ][@data-status="3"]
-#  Fail  редактировать
-########################################################################################################
 
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
@@ -131,66 +114,39 @@ Login
   Натиснути кнопку  ${locator.auction.view.bid.button.edit}
   Ввести значення в поле  ${locator.auction.view.bid.field.Amount}  ${fieldvalue}
   Натиснути кнопку  ${locator.auction.view.bid.button.send}
-# TODO accept
   [Return]  ${fieldname}
 
 Скасувати цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${bid}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-#  Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
-#  Wait Until Page Contains   Ваша пропозиція   10
-#  Click Element   xpath=//a[@class='button save bidToEdit']
-#  Wait Until Page Contains   Відкликати пропозицію   30
-#  Click Element   xpath=//button[@value='unbid']
-#  Wait Until Element Is Visible   xpath=//a[@class='jBtn green']
-#  Click Element   xpath=//a[@class='jBtn green']
-#  Wait Until Element Is Visible   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input
-#  Input Text   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input    203986723
-#  Wait Until Element Is Not Visible   id=jAlertBack
-#  Click Element   xpath=//button[./text()='Надіслати']
-#  Wait Until Element Is Visible   xpath=//a[./text()= 'Закрити']
-#  Click Element   xpath=//a[./text()= 'Закрити']
-  Fail  *** редактировать ***
+  Натиснути кнопку  ${locator.auction.view.tab.bid}
+  Натиснути кнопку  ${locator.auction.view.bid.button.cancel}
 
 Завантажити документ в ставку
   [Arguments]  ${username}  ${filePath}  ${tender_uaid}
-#  Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
-#  Wait Until Page Contains   Ваша пропозиція   10
-#  Click Element   xpath=//a[@class='button save bidToEdit']
-#  Execute Javascript   $('body > div').attr('style', '');
-#  Choose File   xpath=//div[1]/form/input[@name='upload']   ${filePath}
-#  Click Element   xpath=//button[@value='save']
-#  Wait Until Element Is Visible   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input
-#  Input Text   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input    203986723
-#  Wait Until Element Is Not Visible   id=jAlertBack
-#  Click Element   xpath=//button[./text()='Надіслати']
-  Fail  *** редактировать ***
+  alfa.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Натиснути кнопку  ${locator.auction.view.tab.bid}
+  Натиснути кнопку  ${locator.auction.view.bid.button.addDocs}
+  Input text  ${locator.auction.view.bid.attachments.field.Title}  Title
+  Input text  ${locator.auction.view.bid.attachments.field.Description}  Description
+  Choose File  ${locator.auction.view.bid.attachments.field.Document}  ${filepath}
+  Натиснути кнопку  ${locator.auction.view.bid.attachments.button.send}
 
 Змінити документ в ставці
   [Arguments]   ${username}  ${path}  ${bidid}  ${docid}
-#  wait until element is visible   xpath=//a[@class='button save bidToEdit']
-#  Click Element   xpath=//a[@class='button save bidToEdit']
-#  Execute Javascript   $(".topFixed").remove(); $('body > div').attr('style', '');
-#  Wait Until Element Is Visible   xpath=//input[@title='Завантажити оновлену версію']
-#  Choose File   xpath=//div[2]/form/input[@name='upload']   ${path}
-#  Click Element   xpath=//button[@value='save']
-#  Wait Until Element Is Visible   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input
-#  Input Text   xpath=//div[2]/form/table/tbody/tr[1]/td[2]/div/input    203986723
-#  Wait Until Element Is Not Visible   id=jAlertBack
-#  Click Element   xpath=//button[./text()='Надіслати']
-#  Wait Until Element Is Not Visible   id=jAlertBack
-  Fail  *** редактировать ***
+  Натиснути кнопку  ${locator.auction.view.tab.bid}
+  Натиснути кнопку  ${locator.auction.view.bid.button.addDocs}
+  Input text  ${locator.auction.view.bid.attachments.field.Title}  New Title
+  Input text  ${locator.auction.view.bid.attachments.field.Description}  New Description
+  Choose File  ${locator.auction.view.bid.attachments.field.Document}  ${path}
+  Натиснути кнопку  ${locator.auction.view.bid.attachments.button.send}
 
 Отримати посилання на аукціон для глядача
   [Arguments]  ${username}  ${tenderId}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tenderId}
-# TODO uncomment  Wait Until Keyword Succeeds   10 x   60 s   Дочекатися синхронізації для періоду аукціон
-# TODO remove  ${url} =  Execute Javascript  return window.location.href;
   ${url}=  Get Element Attribute  ${locator.auction.view.button.auction}
   [Return]  ${url}
 
 Отримати посилання на аукціон для учасника
   [Arguments]  ${username}  ${tenderId}
-  alfa.Пошук тендера по ідентифікатору  ${username}  ${tenderId}
-  ${url}=  Get Location
-  [Return]  ${url}
+  Return From Keyword  Отримати посилання на аукціон для глядача  ${username}  ${tenderId}

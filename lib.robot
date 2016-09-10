@@ -1,5 +1,4 @@
 *** Settings ***
-Library  Selenium2Screenshots
 Library  Selenium2Library
 Library  alfa_service.py
 Resource  locators.robot
@@ -12,6 +11,7 @@ Resource  locators.robot
 
 Підготувати клієнт для користувача
   [Arguments]  ${username}
+  Set Global Variable  ${question_click_counter}  0
   ${homepage}=  Домашня сторінка  ${username}
   Open Browser  ${homepage}  ${USERS.users['${username}'].browser}  alias=${username}
   Set Window Size   @{USERS.users['${username}'].size}
@@ -21,6 +21,7 @@ Resource  locators.robot
 Дочекатися елемента
   [Arguments]  ${selector}
   Wait Until Page Contains Element   ${selector}
+  Wait Until Element Is Visible  ${selector}
 
 Натиснути кнопку
   [Arguments]  ${selector}
@@ -81,7 +82,6 @@ Resource  locators.robot
 
 Пошук тендера по ідентифікатору
   [Arguments]  ${username}  ${tender_uaid}
-# TODO remove  Switch browser  ${username}
   ${homepage}=  Домашня сторінка  ${username}
   Go To  ${homepage}
   Натиснути кнопку  ${locator.link.auctionsList}
@@ -103,8 +103,15 @@ Input Date
   [Arguments]  ${Dictionary Name}  ${Key}
   ${KeyIsPresent}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${Dictionary Name}  ${Key}
   ${Value}=  Run Keyword If  ${KeyIsPresent}  Get From Dictionary  ${Dictionary Name}  ${Key}
-  ...  ELSE  return_empty_string
+  ...  ELSE  Set Variable  ${EMPTY}
   [Return]  ${Value}
+
+Розгорнути коментарi тiльки раз
+  ${question_click_counter}=  ${question_click_counter} + 1
+  Run Keyword If  ${question_click_counter}==1  Розгорнути коментарi
+
+Розгорнути коментарi
+  Execute Javascript  $('div[role=button]').click();
 
 ######
 #### Проверка отображения
@@ -122,7 +129,8 @@ Input Date
   [Return]  ${Return_value}
 
 Отримати інформацію про status
-  ${status}=   Get Text   id=auctionStatusId
+  Reload Page
+  ${status}=   Get Text   ${locator.auction.view.auctionStatus}
   ${status}=   convert_string_from_dict_alfa  ${status}
   [Return]  ${status}
 
@@ -140,7 +148,6 @@ Input Date
 
 Отримати інформацію про value.amount
   ${valueAmount}=  Отримати текст із поля і показати на сторінці  locator.auction.view.Value.Amount
-# TODO remove  ${valueAmount}=  Replace String   ${valueAmount}   `   ${EMPTY}
   ${valueAmount}=  Convert To Number   ${valueAmount}
   [Return]  ${valueAmount}
 
@@ -151,7 +158,6 @@ Input Date
 
 Отримати інформацію про minimalStep.amount
   ${minimalStepAmount}=  Отримати текст із поля і показати на сторінці  locator.auction.view.MinimalStep.Amount
-# TODO remove  ${minimalStepAmount}=  Replace String   ${minimalStepAmount}   `   ${EMPTY}
   ${minimalStepAmount}=  Convert To Number   ${minimalStepAmount}
   [Return]  ${minimalStepAmount}
 
@@ -177,7 +183,6 @@ Input Date
 
 Отримати інформацію про value.valueAddedTaxIncluded
   ${tax}=  Отримати текст із поля і показати на сторінці  locator.auction.view.value.valueAddedTaxIncluded
-# TODO remove  ${tax}=  convert_string_from_dict_alfa  ${tax}
   ${tax}=  Convert To Boolean  ${tax}
   [Return]  ${tax}
 
@@ -212,7 +217,6 @@ Input Date
 
 Отримати інформацію про items[0].deliveryAddress.streetAddress
   ${streetAddress}=  Отримати текст із поля і показати на сторінці  locator.auction.view.item.DeliveryAddress.StreetAddress0
-# TODO remove  ${streetAddress}=  get_street  ${streetAddress.split(',')[4:]}
   [Return]  ${streetAddress}
 
 Отримати інформацію про items[0].classification.scheme
@@ -250,23 +254,25 @@ Input Date
 ####
 Отримати інформацію про questions[0].answer
   Натиснути кнопку  ${locator.auction.view.tab.questions}
-  Execute Javascript  if (!$('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
+  Розгорнути коментарi
   ${questionsAnswer}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Answer
   [Return]  ${questionsAnswer}
 
 Отримати інформацію про questions[0].title
   Натиснути кнопку  ${locator.auction.view.tab.questions}
+  Розгорнути коментарi
   ${questionsTitle}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Title
   [Return]  ${questionsTitle}
 
 Отримати інформацію про questions[0].description
   Натиснути кнопку  ${locator.auction.view.tab.questions}
-  Execute Javascript  if (!$('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
+  Розгорнути коментарi
   ${questionsDescription}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Description
   [Return]  ${questionsDescription}
 
 Отримати інформацію про questions[0].date
   Натиснути кнопку  ${locator.auction.view.tab.questions}
+  Розгорнути коментарi
   ${questionsDate}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Date
   ${questionsDate}=   convert_date_from_alfa   ${questionsDate}
   [Return]  ${questionsDate}
