@@ -144,9 +144,10 @@ Login
 Отримати посилання на аукціон для глядача
   [Arguments]  ${username}  ${tenderId}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tenderId}
-  ${url}=  Get Element Attribute  ${locator.auction.view.button.auction}
+  ${url}=  Get Element Attribute  ${locator.auction.view.button.auctionPublicUrl}
   [Return]  ${url}
 
 Отримати посилання на аукціон для учасника
   [Arguments]  ${username}  ${tenderId}
-  Return From Keyword  Отримати посилання на аукціон для глядача  ${username}  ${tenderId}
+  ${url}=  Get Element Attribute  ${locator.auction.view.button.auctionBidsUrl}
+  [Return]  ${url}

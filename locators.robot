@@ -13,7 +13,9 @@ ${locator.auctionsList.button.auctionUaid}  //table[@id='searchTable']/tbody/tr/
 ${locator.auctionsList.button.addAuction}  id=createOrderBtn
 
 
-${locator.auction.view.button.auction}  xpath=//div[@id='AuctionInfoList']/a[contains(text(), 'перейти')]@href
+${locator.auction.view.button.auctionPublicUrl}  xpath=//div[@id='AuctionInfoList']/input[@id='auctionUrlTestId']@value
+${locator.auction.view.button.auctionBidsUrl}  xpath=//div[@id='AuctionInfoList']/input[@id='bidsUrlTestId']@value
+
 ${locator.auction.view.button.editAuction}  xpath=//a[contains(@class, 'btn')][contains(text(), 'Редагувати')]
 ${locator.auction.view.auctionStatus}  id=auctionStatusId
 ${locator.auction.view.AuctionID}  id=AuctionID
