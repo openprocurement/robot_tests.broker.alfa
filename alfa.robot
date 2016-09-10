@@ -186,11 +186,11 @@ Login
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tenderId}
 # TODO uncomment  Wait Until Keyword Succeeds   10 x   60 s   Дочекатися синхронізації для періоду аукціон
 # TODO remove  ${url} =  Execute Javascript  return window.location.href;
-  ${url}=  Get Location
+  ${url}=  Get Element Attribute  ${locator.auction.view.button.auction}
   [Return]  ${url}
 
 Отримати посилання на аукціон для учасника
   [Arguments]  ${username}  ${tenderId}
   alfa.Пошук тендера по ідентифікатору  ${username}  ${tenderId}
-  ${url}=  Get Element Attribute  ${locator.auction.view.button.auction}
+  ${url}=  Get Location
   [Return]  ${url}

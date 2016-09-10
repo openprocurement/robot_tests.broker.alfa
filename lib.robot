@@ -250,7 +250,7 @@ Input Date
 ####
 Отримати інформацію про questions[0].answer
   Натиснути кнопку  ${locator.auction.view.tab.questions}
-  Execute Javascript  if ($('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
+  Execute Javascript  if (!$('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
   ${questionsAnswer}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Answer
   [Return]  ${questionsAnswer}
 
@@ -261,7 +261,7 @@ Input Date
 
 Отримати інформацію про questions[0].description
   Натиснути кнопку  ${locator.auction.view.tab.questions}
-  Execute Javascript  if ($('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
+  Execute Javascript  if (!$('div[role=button]').last().hasClass('collapsed')) $('div[role=button]').last().click();
   ${questionsDescription}=   Отримати текст із поля і показати на сторінці   locator.auction.view.questions.field.Description
   [Return]  ${questionsDescription}
 
