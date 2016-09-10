@@ -11,7 +11,7 @@ Resource  locators.robot
 
 Підготувати клієнт для користувача
   [Arguments]  ${username}
-  Set Global Variable  ${question_click_counter}  0
+  Set Suite Variable  ${question_click_counter}  0
   ${homepage}=  Домашня сторінка  ${username}
   Open Browser  ${homepage}  ${USERS.users['${username}'].browser}  alias=${username}
   Set Window Size   @{USERS.users['${username}'].size}
